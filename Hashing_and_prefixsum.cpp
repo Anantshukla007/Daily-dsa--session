@@ -307,3 +307,425 @@ bool isAnagram(string s,string t){
     }
     return true;
 }
+
+
+//Understanding :-> You are given an array “A”; in one step select largest element of array and convert it to second largest element of the array 
+
+#include<iostream>
+#include<map>
+#include<vector>
+
+using namespace std;
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int>b(n+1);
+    map<int,int>mp;
+
+    for(int i=1;i<=n;i++){
+        cin>>b[i];
+    }
+    for(int i=1;i<=n;i++){
+        mp[b[i]]++;
+    }
+
+    vector<pair<int,int>>g;
+    for(auto u:mp){
+        g.push_back({u.first,u.second})
+    }
+    int size=g.size();
+    int step=0;
+
+    for(int i=size-1;i>=1;i--){
+        g[i-1].second+=g[i].second;
+        step+=g[i].second;
+        g[i].second=0;
+    }
+    cout<<step<<endl;
+    return 0;
+
+
+}
+
+//Frist unique charecter in a string
+
+int firstuniqueschar(string s){
+    unordered_map<char,int>hm;
+    for(char c:s){
+        hm[c]++;
+    }
+    for(int i=0;i<n;i++){
+        if(hm[s[i]]==1){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main(){
+    string s="leetcode";
+    cout<<firstuniqueschar(s)<<endl;
+    return 0;
+}
+
+//find commmon charecters
+
+
+vector<string>commmonchars(vector<string>words){
+    vector<string>results;
+    if(words.empty())return results;
+
+    vector<int>minfreq(26,INT_MAX);
+    for(const auto word:words){
+        vector<int>freq(26,0);
+        for(char c:word){
+            freq[c-'a']++;
+        }
+        for(int i=0;i<26;i++){
+            minfreq[i]=min(minfreq[i],freq[i]);
+
+        }
+    }
+    for(int i=0;i<26;i++){
+        while(minfreq[i]>0){
+            result.push_back(string(1,i+'a'));
+            minfreq[i]--;
+        }
+    }
+    return result;
+}
+
+
+
+//longest consicutive sequence
+
+int longestConsecutinve(vector<int>nums){
+    int n=nums.size();
+    unorderd_map<int,int>mp;
+    int ans=0;
+    for(int i=0;i<n;i++){
+        if(mp[nums[i]]==0){
+            mp[nums[i]]++;
+        }
+    }
+
+    for(int i=0;i<n;i++){
+        int val=nums[i];
+        if(mp.find(val)!=mp.end() && mp.find(val-1)==mp.end()){
+            int curr=val;
+            cnt=0;
+            while(mp.find(curr)!=mp.end()){
+                mp[curr]--;
+                cnt++;
+                curr++;
+            }
+            ans=max(ans,cnt);
+        } 
+        return ans;
+    }
+}
+
+//longest subarray sum with 0 sum
+
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+int solve(vector<int>A, int n){
+    int sum=0;
+    int longest_length=0;
+    unordered_map<int,int>mp;
+    mp[0]=--1;
+    for(int i=0;i<a.size();i++){
+        sum+=a[i];
+        if(mp.find(sum)!=mp.end()){
+            longest_length=max(longest_length,i-mp[sum]);
+            
+        }
+        else{
+            mp[sum]=i;
+        }
+    }
+    return longest_length;
+
+}
+
+int main(){
+    vector<int>a={193,5,546,567,57,67,67,67,6};
+    int answer=solve(a,n);
+    cout<<"answer is"<<answer<<endl;
+    return 0;
+}
+
+//count number of pairs with absolute differnce k
+
+int countkdiff(vector<int>num,int k){
+    unorderd_map<int,int>mp;
+    int count =0;
+
+    for(int i=0;i<n;i++){
+        if(mp.find(nums[i]-k)!=mp.end()){
+            count+=mp[nums[i]-k]
+
+        }
+
+        if(mp.find([nums[i]]+k)!=mp.end()){
+            count+=mp[nums[i]+k];
+        }
+        mp[nums[i]]++;
+    }
+    return count;
+}
+
+
+//find the prefix common arrays
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+
+
+int main(){
+
+    ll n;
+    cin>>n;
+
+    vector<ll>A(n,0),B(n,0);
+
+    for(int i=0;i<;i++){
+        cin>>A[i];
+    }
+
+    for(int i=0;i<n;i++){
+        cin>>B[i];
+    }
+
+    vector<ll>ans;
+    int i=1;
+    if(A[0]==B[0]){
+        ans.push_back(1);
+    }
+    else{
+        ans.push_back(0);
+    }
+
+    while(i<A.size()){
+        unordered_map<int,int>mp;
+        for(int j=i;j>=0;j--){
+            mp[A[j]]++;
+        }
+
+        int cnt=0;
+        for(int j=i;j>=0;j--){
+            if(mp.find(B[j])!=mp.end()){
+                cnt++;
+                mp[B[j]]--;
+                if(mp[B[j]]==0){
+                    mp.erase(B[j]);
+                }
+            }
+        }
+        ans.push_back(cnt);
+        i++;
+    }
+
+    for(int i=0;i<n;i++){
+        cout<<ans[i]<<" ";
+
+    }
+    return 0;
+}
+
+
+//longest palindrome byb concatenating two letters words
+
+int longestpalindrome(vector<string>words){
+    int len=0;
+    int count =0;
+    int flag=0;
+
+    unorderd_map<string,int>mp;
+
+    for(int i=0;i<n;i++){
+        mp[words[i]]++;
+    }
+
+    for(int i=0;i<words.size();i++){
+        if(words[i][0]!= words[i][1]){
+            string s=" ";
+            s+=words[i][1];
+            s+=words[i][0];
+
+            if(mp.find()!=mp.end()){
+                count=min(mp[words[i]],mp[s]);
+                len+=count*4;
+            }
+
+            mp.erase(words[i]);
+            mp.erase(s);
+        }
+
+        else if(words[i][0]==words[i][1]){
+            count=mp[words[i]];
+            if(mp[words[i]]%2==0){
+
+                len+=count*2;
+            }
+            else{
+                if(flag==0){
+                    len+=count*2;
+                    flag=1;
+                }
+                else{
+                    len+=(count-1)*2;
+                }
+            }
+        }
+        mp.erase(words[i]);
+    }
+    return len;
+}
+
+//Understanding - We are given an array of size N ; we are told to pick up any 2 numbers from the array such that their digit sum is equal ; if their digit sum is equal ; calculate their sum ; question is saying to find the maximum possible sum 
+
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+ll sol(ll v){
+    ll sum=0;
+    while(v!=0){
+        sum=sum+v%10;
+        v=v/10;
+
+
+    }
+    return sum;
+}
+
+int main(){
+    int n;
+    cin>>n;
+    ll b[n+1]={0};
+
+    ll i=1;
+
+    while(i<=n){
+        cin>>b[i];
+        i++;
+    }
+
+    unorderd_map<ll,ll>kk;
+
+    int i=1;
+    ll answer=-1;
+    while(i<=n){
+
+        if(kk.find(sol(b[i])!==kk.end())){
+            ll pp=b[i]+kk[sol(b[i])];
+
+            answer=max(answer,pp);
+            kk[sol(b[i])]=max(kk[sol(b[i])],b[i]);
+        }
+        else{
+            kk[sol(b[i])]=b[i];
+        }
+        i++;
+    }
+    cout<<answer;
+    return 0;
+}
+
+
+//Find cnt of string t in string s until we are getting string t in string s; if any char of t doesn’t present in s at any moment then we will break & return the cnt; & if string s is empty at any moment then again we will break from the loop & return the cnt. 
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+
+    string s,t;
+
+    cin>>s>>t;
+
+    unordered_map<char,int>mp1,mp2;
+
+    for(int i=0;i<s.size();i++)mp1[s[i]]++;
+    for(int i=0;i<t.size();i++)mp2[t[i]]++;
+
+    int cnt=1e9;
+
+    for(int i=0;i<t.size();i++){
+        if(mp1.find(t[i])==mp1.end()){
+            return 0;
+        }
+
+        int val=mpq[t[i]]/mp2[s[i]];
+
+        cnt=min(cnt,val);
+    }
+
+    cout<<cnt;
+    return 0;
+
+}
+
+//We are only solving the easy version of this problem in this session. 
+
+//1<=a[i]<=100000
+//1<=k<=100000
+
+//a[i]-k>=1 and a[i]+k<=100000 
+
+//—------------------------------------------------------------------
+
+//Harder version -> 
+
+//1<=a[i]<=10000000000
+//1<=k<=10000000000
+
+
+//For the harder version you need to watch this video + document complete then you will get how to solve the harder version of the above problem. 
+
+
+//this is called the range sum query question 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+
+    int n;
+    cin>>;
+    int a[n+1];
+    int k;
+    cin>>k;
+
+    int i=1;
+
+    while(i<=n){
+        cin>>a[i];
+        i++;
+    }
+
+    int b[200006]={0};
+
+    i=1;
+    while(i<=n){
+        int l=a[i]-k;
+        int r=a[i]+k;
+        b[l]=b[l]+1;
+        b[r+1]=b[r+1]-1;
+        i=i+1;
+    }
+    int answer=1;
+    i=1;
+    while(i<20006){
+        b[i]=b[i-1]+b[i];
+        answer=max(b[i],answer);
+        i++;
+    }
+}
+cout<<answer;
+return 0;
