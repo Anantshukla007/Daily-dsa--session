@@ -1482,3 +1482,1227 @@ vector<int>matching(int n, vector<string>x){
     return p;
 }
 
+
+/*> Please find the increasing subsequence of size - “3” - Return true if it exists; return false if it does not exist 
+
+-> [ 18 5 4 3 2 1 8 10] 
+
+Answer :- True; [(1,8,10) , (5,8,10) , (4,8,10) , (3,8,10) ,(2,8,10)]
+
+-> [ 5 4 3 2 1 8] 
+
+Answer :- False. 
+*/
+
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+
+bool funciton(vector<int>b,int n){
+
+
+    vector<int>s(n+1);
+    s[n]=b[n];
+
+    for(int i=n-1;i>=1;i--){
+
+        s[i]=max(s[i+a],b[i]);
+    }
+
+
+    int p=b[1];
+    for(int i=2;i<=n-1;i++){
+
+        if(p<b[i] && b[i]<s[i+1]){
+            return true;
+        }
+
+        p=min(p,b[i]);
+
+
+    }
+
+
+    returnn true;
+}
+
+
+int main(){
+    int n;
+    cin>>n;
+    vector<int>b(n+1);
+    for(int i=1;i<=n;i++){
+        cin>>b[i];
+    }
+
+    bool result=function(b,n);
+    cout<<(result?"True":"False")<<endl;
+
+    return 0;
+}
+
+
+/*Q:- Given an array of size “N”; find the shortest subarray such that the sum of first and element of the subarray is “k” (Subarray should at least be of size>=2)
+
+->[5 6 7 8 10 4 3 2 1] K = 8 
+
+-> 7. 
+*/
+
+
+#include<iostream>
+#include<vector>
+#include<unorderd_map>
+#include<climits>
+
+using namespace std;
+
+int main(){
+
+    int n;
+    cin>>n;
+
+    vector<int>b(n+1);
+
+    for(int i=1;i<=n;i++){
+        cin>>b[i];
+    }
+
+    int k;
+    cin>>k;
+
+    int u=0;
+
+    unorderd_map<int,int>mp;
+
+    for(int j=1;j<=n;j++){
+        int end=b[j];
+        int start=k-end;
+
+        if(mp.count(start)){
+            int i=mp[start];
+            int l=j-i+1;
+            u=max(u,l);
+
+        }
+
+        if(mp.count(end)==0){
+            mp[end]=1;
+        }
+    }
+
+    cout<<u<<endl;
+    return 0;
+}
+
+/*Understanding :-> We are given an array  of size “N”. We have to pick “x” elements at exactly “y” distance; sum of all them should be minimum. 
+
+-> [1 5 8 1 4 5 8] X = 2; Y =2;
+(5+1=6.)
+
+-> Given in recording 
+*/
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long int ll;
+
+int main(){
+
+
+    ll n;
+    cin>>n;
+    ll a[n+1]={0};
+
+    for(int i=1;i<=n;i++){
+
+        cin>>a[i];
+    }
+
+    ll x;
+    ll y;
+
+    ll pref[n+1]={0};
+    for( ll i=1;i<=n;i++){
+        if(i-y >= 1){
+            pref[i]=a[i]+pref[i-y];
+
+        }
+        else{
+            pref[i]=a[i];
+        }
+    }
+
+    ll k =1e18;
+    for( ll i=1;i<=n;i++){
+        ll index = i-(x-1)*y;
+
+        if(index>=1){
+
+            ll g= pref[i];
+
+            if(index-y>=1){
+                g=g-pref[index-y];
+
+            }
+
+            k=min(g,k);
+            cout<<g;
+            cout<<'\n';
+        }
+    }
+    cout<<k;
+
+    return 0;
+}
+
+
+/*You are given an array 'A' of 'N' positive integers. The function F(X,Y) is defined as the number obtained by concatenating the decimal representations of X and Y. For example, F(300,90) = 30090 and F(1,1001) = 11001.
+Your task is to find the sum of all possible values of F(A), Al) for all pairs (i, j) such that 1si<jsN. In other words, compute the sum F(A1,A2)+F(A1,A3)+_+ F(A2,A3) + F(A2,A4)++F(AN-1,AN)
+Since the answer can be very large, return the answer modulo 998244353.
+Input Format
+10 11 12)
+The first line of input contains a single integer N.
+The second line of input contains N space separated integers representing the array A.
+Output Format
+Print a single integer representing the final sum modulo 998244353
+Sample Testcase #0
+Testcase input
+3 3 14 15
+Testcase Output
+2044*/
+
+
+
+/*For j=1:
+
+y = digit_count(3) = 1
+vl = (1-1)*3 + 10^1 * 0 = 0
+ans = 0
+sum = 3
+
+For j=2:
+
+y = digit_count(14) = 2
+vl = (2-1)*14 + 10^2 * 3 = 314
+ans = 314
+sum = 17
+
+For j=3:
+
+y = digit_count(15) = 2
+vl = (2)*15 + 10^2 * 17 = 1730
+ans = 2044
+
+Final output: Sum: 2044*/
+
+
+#include<iostream>
+#include<vector>
+#include<cmath>
+
+int digit_count(int num){
+    return to_string(num).length();
+}
+
+
+int main(){
+
+    int n=3;
+
+    vector<int>b={3,14,15};
+
+    long long sum=0;
+
+    long long ans=0;
+
+    for(int j=1;j<=n;j++){
+
+        int y= digit_count(b[j]);
+        long long vl=(j-1)*b[j]   + pow(10,y)*sum;
+
+        ans+=vl;
+        sum+=b[j];
+    }
+    cout<<"sum"<<ans<<endl;
+    return 0;
+}
+
+
+/*Understanding :-> You are given an integer array of size N; find out the maximum number of pairs whose sum is K; once you select (x,y) ; you can never use “x” or “y” in any other pair 
+*/
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+
+int maxoperations(vector<int>nums,int k){
+
+    unorderd_map<int,int>kk,gg;
+
+    int i=0;
+    int n=nums.size();
+
+    while(i<n){
+        kk[nums[i]]++;
+        i++;
+    }
+
+
+    int answer=0;
+
+    for(int i=0;i<n;i++){
+
+        int number =nums[i];
+        int partner =k-number;
+
+        if(gg[number]==0 && gg[partner]==0){
+
+            if(number==partner){
+                int yy=kk[number];
+                answer=answer+(yy/2);
+            }
+            else{
+                answer=answer +min(kk[number],kk[partner]);
+            }
+        }
+
+        gg[number]=1;
+        gg[partner]=1;
+
+    }
+
+    return answer;
+}
+
+
+int main(){
+
+    ll n;
+
+    cin>>n;
+
+    vector<int>nums;
+    ll i=0;
+    while(i<n){
+        ll y;
+        cin>>y;
+
+        nums.push_back(yy);
+
+        i++;
+    }
+
+    i=0;
+    int answer=0;
+
+    while(i<n){
+
+        ll j=0;
+
+        while(j<n){
+
+            ll k=nums[i]+nums[j];
+
+            int bb=maxoperations(nums,k);
+
+            answer=max(answer,bb);
+            j++;
+        }
+
+        i++;
+    }
+
+    cout<<answer;
+    return 0;
+
+}
+
+
+/*You are given a 0-indexed integer array nums.
+
+Return the maximum value over all triplets of indices (i, j, k) such that i < j < k. If all such triplets have a negative value, return 0.
+
+The value of a triplet of indices (i, j, k) is equal to (nums[i] - nums[j]) * nums[k].
+
+ 
+
+Example 1:
+
+Input: nums = [12,6,1,2,7]
+Output: 77
+Explanation: The value of the triplet (0, 2, 4) is (nums[0] - nums[2]) * nums[4] = 77.
+It can be shown that there are no ordered triplets of indices with a value greater than 77. 
+
+Note: Please do not copy the description during the contest to maintain the integrity of your submissions.©leetcode*/
+
+
+
+long long solve(vector<int>nums){
+    int n=nums.size();
+    vector<int>p(n,0),s(n,0);
+
+    int m=nums[0];
+
+    for(int i=1;i<n;i++){
+        p[i]=m;
+
+        m=max(m,nums[i]);
+    }
+
+    m=nums[n-1];
+
+    for(int i=n-2;i>=0;i--){
+        s[i]=m;
+
+        m=max(m,nums[i]);
+    }
+
+
+    long long a=0;
+
+    for(int i=0;i<n-1;i++){
+        long long v=(p[i]- nums[i])(s[i]);
+
+        if(a<v)a==v;
+        
+    }
+
+    return a;
+}
+
+
+/*Q:- Given an array of N positive integers; find the number of valleys ; of size >=3 . 
+
+B = [5 3 4 8] 
+
+Number of V-shapes :- 2 (5,3,4) and (5,3,4,8) 
+*/
+
+
+#include<iostream>
+#include<vector>
+
+using namesapce std;
+
+int main(){
+
+    vector<int>b(n+1);
+    vector<int>left(n+1);
+    vector<int>right(n+1);
+    vector<int>valley(n+1);
+
+    for(int i=1;i<=n;i++){
+        cin>>b[i];
+    }
+
+
+    left[1]=1;
+    for(int i=2;i<=n;i++){
+        if(b[i-1]>b[i]){
+            left[i]=left[i-1]+1;
+        }
+
+        else{
+            left[i]=1
+        }
+    }
+
+    right[n]=1;
+
+    for(int i=n-1;i>=1;i--){
+        if(b[i]<b[i+1]){
+            right[i]=right[i+1]+1;
+
+        }
+        else{
+            right[i]=1;
+
+        }
+    }
+
+
+
+    int sum=0;
+    for(int i=1;i<=n;i++){
+        valley[i]=(left[i]-1)*(right[i]-1);
+        sum+=valley[i];
+    }
+    cout<<sum<<endl;
+    return 0;
+}
+
+/*Understanding :-> We are given an array of size “N”; find the number of subarrays which are.-> have the same element at start as well as end ; and the sum of that subarray(excluding the first and last number) = first number = last number 
+
+1<=N<=300000
+1<=c[i]<=1000000000.
+*/
+
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long int ll ; 
+
+int main() {
+    ll n;
+    cin>>n;
+    map<pair<ll,ll>,ll> k;
+    ll count = 0 ; 
+    ll i = 1 ;
+    ll sum = 0 ;
+    while(i<=n){
+        ll number;
+        cin>>number;
+        sum = sum + number ;
+        
+        
+        
+        ll focus_sum = sum - number ; 
+        ll g = focus_sum - number;
+        count = count + k[{number,g}];
+        
+        
+        k[{number,sum}]++;
+        
+        i++;
+    }
+    
+    cout<<count;
+    
+    
+    
+    
+    return 0;
+}
+
+
+/*"Given a string s of length n and q queries, each query gives indices [l, r]. For each query, find the total number of substrings where each substring consists of only one distinct character."*/
+
+#include<iostream>
+#include<vector>
+using namesapce std;
+
+int main(){
+    string s;
+    cin>>s;
+
+    int n=s.length();
+
+    int q;
+    cin>>q;
+
+    vector<vector<int>>pre(n+1,vector<int>(26,0));
+
+    for(int i=0;i<n;i++){
+        int e=s[i]-'a';
+
+        for(int j=0;j<26;j++){
+            pre[i+1][j]=(e==j)+pre[i][j];
+        }
+    }
+
+    for(int i=0;i<q;i++){
+        int l,r;
+        cin>>l>>r;
+        int ans=0;
+        for(int j=0;j<26;j++){
+            int num =pre[r][j]-pre[l-1][j];
+            ans+=nume*(num+1)/2;
+        }
+
+        cout<<ans<<endl;
+    }
+    return 0;
+
+
+
+/*Understanding :-> Given an array of size “N”; find a subset from an array with a particular property and the sum of that subset should be maximum possible. 
+
+-> all adjacent elements should follow this.-> 
+
+(s[1],s[2],...........s[m]) -> s[2] - s[1] = position[2] - position[1] 
+S[3]-s[2] = position[3] - position[2].
+.
+*/
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long int ll;
+
+int main(){
+
+    ll nl;
+    cin>>n;
+
+    unordered_map<ll,ll>kk;
+    for(ll i=1;i<=n;i++){
+        ll y;
+        cin>>y;
+        kk[yy-i]=kk[yy-i]+yy;
+    }
+
+    ll v;
+    for(auto itr = kk.begin();itr!=kk.end();itr++){
+        cout<<itr->first<<" "<<itr->second;
+        v=max(v,itr->second);
+        cout<<'\n';
+    }
+
+    cout<<v;
+}
+
+
+/*Understanding : Given array “A” of size “N”; find the number of pairs in the array (i,j) such that a[i] + a[j] is divisible by k 
+
+1<=k<=2000000000
+1<=a[i]<=1000000000
+1<=n<=100000
+
+-> [5 2 3 1 1] 
+*/
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int ,main(){
+
+    ll n;
+    cin>>n;
+    ll k;
+    cin>>k;
+
+    unorderd_map<ll,ll>mp;
+
+    int sum=0;
+
+    for(ll i=1;i<=n;i++){
+        ll yy;
+        cin>>yy;
+        ll g= k-(yy%k);
+        g=g%k;
+        sum=sum+mp[g];
+        mp[yy%k]=mp[yy%k]+1;
+    }
+
+    cout<<sum;
+    return 0;
+
+
+    
+}
+
+
+/*> Given an array of size “N” ; find the maximum sum subarray which has the same elements in the start and end. 
+
+Example :- 
+
+[1 8 10 8 -5 8] 
+
+Output :-> 29.
+
+Understanding :-> Find the subarray with maximum sum such that the first and last elements are the same. 
+*/
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+
+    int n;
+    cin>>n;
+    int i=1;
+    int answer=-1e18;
+
+    unordered_map<int,int>mp;
+
+    int sum=0;
+    while(i<=n){
+        int yy;
+        cin>>yy;
+        answer=max(answer,yy);
+        if(mp.find(yy)==mp.end()){
+            mp[yy]=sum;
+        }
+        else{
+            ll gg =sum+yy-mp[yy];
+            answer=max(answer,gg);
+            mp[yy]=min(mp[yy],sum);
+        }
+        sum=sum+yy;
+        i++;
+    }
+    cout<<answer;
+    return 0;
+
+}
+
+/*Understanding : We are given an array B of size “N”; Divide the array into 4 continuous parts such that g = part1 -part2 +part3 -part4 is maximized. 
+
+Any part is allowed to be empty as well ; but collectively they should cover the whole array 
+
+Example:-> 
+
+G = p1 + p3 - (p2 + p4)
+*/
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+int main(){
+    int n;
+    cin>>n;
+    int tot=0;
+    int b[n+1]={0};
+
+    int i=1;
+    while(i<=n){
+
+        cin>>b[i];
+        tot+=b[i];
+        i++;
+
+
+    }
+
+
+    int p[n+5]={0};
+
+    while(i<=n){
+        p[i]=min(b[i],b[i]+p[i-1]);
+        i++;
+    }
+
+
+    int s[n+5]={0};
+    i=n;
+    int sum=0;
+
+    while(i>=1){
+        sum=sum+b[i];
+        s[i]=min(sum,s[i+1]);
+        i--;
+    }
+
+    i=0;
+    int t=0;
+    int d=1e18;
+
+    while(i<=n){
+        int v=min(t,p[i])+min(s[i+1],t);
+        d=min(d,v);
+        i++;
+
+    }
+
+
+    cout<<tot-2*d;
+
+    return 0;
+
+}
+
+
+
+
+/*
+Find the number of subarrays such that their maximum is K - 
+
+[8 2 1 3 4 5 1 10] 
+
+K = 3
+
+Output = 3. [3],[1 3],[2 1 3] 
+*/
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+ 
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Sample array and target value K.
+    vector<int> arr = {8, 2, 1, 3, 4, 5, 1, 10};
+    int n = arr.size();
+    int K = 3;
+    
+    // Precompute leftSpan:
+    // leftSpan[i] = length of contiguous segment ending at i (to the left) 
+    // where every element is <= K.
+    vector<long long> leftSpan(n, 0);
+    if(n > 0)
+        leftSpan[0] = (arr[0] <= K) ? 1 : 0;
+    for (int i = 1; i < n; i++){
+        if(arr[i] <= K)
+            leftSpan[i] = leftSpan[i-1] + 1;
+        else
+            leftSpan[i] = 0;
+    }
+    
+    // Precompute rightSpan:
+    // rightSpan[i] = length of contiguous segment starting at i (to the right) 
+    // where every element is strictly less than K.
+    vector<long long> rightSpan(n, 0);
+    if(n > 0)
+        rightSpan[n-1] = (arr[n-1] < K) ? 1 : 0;
+    for (int i = n-2; i >= 0; i--){
+        if(arr[i] < K)
+            rightSpan[i] = rightSpan[i+1] + 1;
+        else
+            rightSpan[i] = 0;
+    }
+    
+    // Count valid subarrays using the formula:
+    // For an occurrence of K at index i, let:
+    //   x = number of contiguous valid elements to the left (i.e., leftSpan[i-1])
+    //   y = number of contiguous valid elements to the right (i.e., rightSpan[i+1])
+    // Then valid subarrays = x + y + (x*y) + 1.
+    long long totalCount = 0;
+    for (int i = 0; i < n; i++){
+        if(arr[i] == K){
+            long long x = (i == 0) ? 0 : leftSpan[i-1];
+            long long y = (i == n-1) ? 0 : rightSpan[i+1];
+            long long count_here = x + y + (x * y) + 1;
+            totalCount += count_here;
+        }
+    }
+    
+    cout << totalCount << "\n";
+    return 0;
+}
+
+
+//count number of nice subarrays
+int numberofnice(vector<int>nums,int k){
+
+    int n=nums.size();
+    int ans=0;
+    int odd=0;
+    int cnt=0;
+    int l=0;
+    int r=0;
+
+    while(r<n){
+        if(numd[r]%2!=0){
+            odd+;
+            cnt=0;
+
+        }
+        while(odd>=k){
+            cnt++;
+            odd-=nums[l]&1;
+            l++;
+        }
+        ans+=cnt;
+        r++;
+
+    }
+
+    return ans;
+}
+
+
+//goldman sachs session
+
+
+#include<iostream>
+#include <vector>
+#include<unorderd_map>
+using namespace std;
+
+vector<string>convert(vector<string>dates){
+    vector<string>ans;
+
+    unorderd_map<string,string>montmap={
+        {"Jan", "01"},
+        {"Feb", "02"},
+        {"Mar", "03"},
+        {"Apr", "04"},
+        {"May", "05"},
+        {"Jun", "06"},
+        {"Jul", "07"},
+        {"Aug", "08"},
+        {"Sep", "09"},
+        {"Oct", "10"},
+        {"Nov", "11"},
+        {"Dec", "12"}
+    }
+
+
+    for (string date:dates){
+        string day=" ";
+        string month="";
+        string year="";
+
+        if(isdigit(date[1])){
+            day=date.substr(0,2);
+
+        }
+        else{
+
+            day="0"+date.susbstr(0,1);
+        }
+
+        string monthname=date.substr(date.find(' ')+1,3);
+
+        month=monthmap[monthname];
+
+        year=dates.substr(date.find_lat_of(' ')+1);
+        ans.push_back(year+"-"+month+'-'+day);
+    }
+
+    return ans;
+}
+
+int main() {
+    vector<string> dates = {"20th Oct 2052", "6th Jun 1933", "26th May 1960"};
+    vector<string> result = convertDateToYYYYMMDD(dates);
+    for (string date : result) {
+        cout << date << endl;
+    }
+    return 0;
+}
+
+
+/*You are given an integer array nums. You need to create a 2D array from nums satisfying the following conditions:
+
+The 2D array should contain only the elements of the array nums.
+Each row in the 2D array contains distinct integers.
+The number of rows in the 2D array should be minimal.
+Return the resulting array. If there are multiple answers, return any of them.
+
+Note that the 2D array can have a different number of elements on each row.*/
+
+vector<vector<int>>findmatrix(vector<int>nums){
+
+    unorderd_map<int,int>mp;
+
+    for(auto i:nums){
+        mp[i]++;
+    }
+
+
+    vector<vector<int>>ans;
+    while(mp.size()){
+        vector<int>ans1;
+        for(auto i:mp){
+            ans1.push_back(i.first);
+            for(int i:ans1){
+                if(!--mp[i])mp.ersae(i);
+            }
+
+            ans.push_back(ans1);
+        }
+    }
+    return ans;
+}
+
+
+/*You are given a 0-indexed integer array arr, and an m x n integer matrix mat. arr and mat both contain all the integers in the range [1, m * n].
+
+Go through each index i in arr starting from index 0 and paint the cell in mat containing the integer arr[i].
+
+Return the smallest index i at which either a row or a column will be completely painted in mat.*/
+
+
+
+
+int firstcompletelypainted(vector<int>arr,vector<vector<int>>mat){
+    map<int,int>mp;
+
+    int n=mat.size();
+    int m=mat[0].size();
+
+    ans=1e9;
+
+    for(int i=0;i<arr.size();i++){
+        mp[arr[i]]=i;
+        
+    }
+
+    for(int i=0;i<n;i++){
+        int c=0;
+        for(int j=0;j<m;j++){
+            c=max(c,mp[mapt[i][j]]);
+
+        }
+        ans=min(ans,c);
+    }
+
+    for(int i=0;i<m;i++){
+        int c=0;
+        for(int j=0;j<n;j++){
+            c=max(c,mp[mat[[j][i]]]);
+
+        }
+
+        ans=min(ans,c);
+    }
+
+    return ans;
+}
+
+
+/*P0 :-> Find the sum of all subarrays which are in Arithmetic Progression! Each array element is also an Arithmetic Progression!
+
+Difference should only be 0 or 1 
+
+[5 8 8 10 11 12] 
+*/
+
+
+
+#inlcude<iostream>
+#include<vector>
+
+using namepsace std;
+
+int sum_of_arithmetic(vector<int>b,int n){
+
+    int w=0;
+    for(int i=1;i<=n;i++){
+        w+=b[i];
+    }
+
+    int v=0;
+    int c=0;
+    int prv=0;
+    int answer=0;
+
+    for(int i=1;i<=n;i++){
+        if(i==1){
+            v=v+b[i];
+            prv=b[i];
+
+        }
+
+        else{
+            if(b[i]-b[i-1]==1){
+                c=c+1;
+                v=prv+b[i]*(c+1);
+
+                prv=v;
+
+            }
+            else{
+                v=b[i];
+                c=0;
+                prv=b[i];
+            }
+
+
+        }
+
+        answer=answer+v;
+    }
+
+    v=0;
+    c=0;
+    prv=0;
+
+    for(int i=1;i<=n;i++){
+        if(i==1){
+            v=v+b[i];
+            prv=b[i];
+        }
+        else{
+            if(b[i]-b[i-1]==0){
+                c=c+1;
+                prv=b[i];
+            }
+            else{
+                v=b[i];
+                c=0;
+                prv=b[i];
+            }
+        }
+        answer+=v;
+    }
+    answer=answer-w;
+    return answer;
+}
+
+int main(){
+    int n;
+    cin>>n;
+
+    vector<int>b(n+1);
+
+    for(int i=1;i<=n;i++){
+        cin>>b[i];
+
+    }
+    int result=sum_of_arithmetic_subarrays(b,n);
+    cout<<result<<end;
+}
+
+
+/*Given an integer array nums and an integer k, return true if nums has a good subarray or false otherwise.
+
+A good subarray is a subarray where:
+
+its length is at least two, and
+the sum of the elements of the subarray is a multiple of k.
+Note that:
+
+A subarray is a contiguous part of the array.
+An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.*/
+
+
+
+bool check(vector<int>nums,int k){
+
+    set<int>s;
+
+    int sum=0;
+    int mod=0;
+    for(int i:nums){
+        sum+=i;
+        int temp=sum%k;
+        if(s.find(temp)!=s.end()){
+            return true;
+        }
+
+        s.insert(mode);
+        mod=temp;
+    }
+    return false;
+}
+
+
+/*Understanding :- We will give you a string ; for each char in the string tell us how many times is it appearing in all the substrings of original string ; once you have calculated it -> answer is the char with highest frequency if multiple char have highest frequency then print the smallest char 
+
+
+
+s = “abca”
+
+a = 10
+b = 7 
+c = 7 
+
+Answer -> a 
+*/
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+
+    string s;
+    cin>>s;
+    int n=s.size();
+
+    unordered_map<char,int>mp;
+
+    for(int i=0;i<n;i++){
+        int x=i;
+        int y=n-i-1;
+        mp[s[i]]=mp[s[i]]+ x*y + x+y+1;
+    }
+
+    char answer;
+    int max=0;
+
+    for(auto u:k){
+        int frequency=u.second;
+        if(frequency> max){
+            max=frequency;
+            answer=u.first;
+        }
+    }
+    cout<<answer<<endl;
+    return 0;
+}
+
+
+/*Understanding :-> We will give you a string only consisting of “a” and “b” ; now convert it to a string such that there is no subset like “bab” or “aba” ; do this in minimum cost ; 
+
+Cost : 1 for flipping a into b or b into a. 
+
+Observation-> We have to convert the given string -> valid string 
+-> It means you should know what a valid string looks like.?
+
+-> “aaaaaaa………bbbbbbbbbbbb”
+-> “bbbbbbbbbb……………aaaaaaaaaaaa.”
+*/
+
+
+int main(){
+    string s;
+    int n=s.size();
+
+    prefix_a[n+5]={0};
+    prefix_b[n+5]={0};
+    suffix_a[n+5]={0};
+    suffix_b[n+5]={0};
+
+
+    if(s[0]=='b'){
+        prefix_a[0]=1;
+    }
+    else{
+        prefix_b[0]=1;
+    }
+
+    for(i=1;i<n;i++){
+        if(s[i]=='a'){
+            prefix_a[i]=prefix_a[i-1];
+        }
+        else{
+            preifx_a[i]=1+prefix_a[i-1];
+        }
+    }
+    for(i=1;i<n;i++){
+        if(s[i]=='b'){
+            prefix_b[i]=prefix_b[i-1];
+        }
+        else{
+            preffix_b[i]=1+prefix_b[i-1]
+        }
+    }
+    if(s[n-1]=='a'){
+    suffix_b[n-1] = 1 
+}
+else {
+    suffix_a[n-1] = 1 
+}
+ 
+for(i=n-1;i>=0;i--){
+    if(s[i]=='a'){
+        suffix_b[i] = 1 + suffix_b[i+1]
+    } else { // 
+        suffix_b[i] = suffix_b[i+1]
+    }
+}
+ 
+for(i=n-1;i>=0;i--){
+    if(s[i]=='b'){
+        suffix_a[i] = 1 + suffix_a[i+1]
+    } else { // 
+        suffix_a[i] = suffix_a[i+1]
+    }
+}
+ 
+
+
+
+}
